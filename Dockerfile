@@ -26,4 +26,4 @@ USER app
 
 EXPOSE 9000
 
-ENTRYPOINT ["java", "-Dplay.server.pidfile.path=/dev/null", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
