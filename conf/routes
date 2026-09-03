@@ -3,8 +3,8 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
+GET     /health                        controllers.HealthController.health
 POST    /validate                      controllers.ValidationController.validate
 
 GET     /docs/swagger-ui/index.html    controllers.SwaggerController.index
-GET     /docs/swagger-ui/*file         controllers.SwaggerController.asset(file)
 GET     /assets/*file                  controllers.Assets.at(path="/public", file)

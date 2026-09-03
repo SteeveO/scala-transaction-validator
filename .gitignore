@@ -20,3 +20,6 @@ RUNNING_PID
 .vscode/
 metals.sbt
 
+# local secrets
+.env
+
