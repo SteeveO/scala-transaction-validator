@@ -21,7 +21,7 @@ Once started (a few seconds):
 | URL | Description |
 |---|---|
 | `POST http://localhost:9000/validate` | Transaction validation endpoint |
-| `http://localhost:9000/docs/swagger-ui/index.html` | Interactive docs (try the API from the browser) |
+| `http://localhost:9000/docs` | Interactive docs (try the API from the browser) |
 | `GET http://localhost:9000/health` | Healthcheck (`{"status": "ok"}`) |
 
 ## Context
