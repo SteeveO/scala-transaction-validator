@@ -3,6 +3,7 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
+GET     /health                        controllers.HealthController.health
 POST    /validate                      controllers.ValidationController.validate
 
 GET     /docs/swagger-ui/index.html    controllers.SwaggerController.index
