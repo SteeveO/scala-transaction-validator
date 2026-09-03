@@ -2,3 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
+
+POST    /validate                      controllers.ValidationController.validate
+
+GET     /docs/swagger-ui/index.html    controllers.SwaggerController.index
+GET     /docs/swagger-ui/*file         controllers.SwaggerController.asset(file)
+GET     /assets/*file                  controllers.Assets.at(path="/public", file)

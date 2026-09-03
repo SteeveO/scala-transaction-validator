@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: Transaction Validator API
+  version: "1.0.0"
+  description: >
+    Moteur de validation de transactions bancaires. Chaque transaction est
+    soumise à un pipeline de règles métier (montant, devise, statut du
+    compte, solde, plafond, doublon, compliance) et retourne un résultat
+    typé : valide, invalide (avec la liste des erreurs), ou flaggée pour
+    revue compliance.
+paths:
+  /validate:
+    post:
+      summary: Valide une transaction bancaire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionRequest"
+            example:
+              id: tx-1001
+              amount: 250.0
+              currency: EUR
+              transactionType: Payment
+              sourceAccountId: acc-active-eur
+              destinationAccountId: acc-active-usd
+      responses:
+        "200":
+          description: >
+            Résultat de la validation (valide, invalide ou flaggée). Une
+            transaction rejetée pour des raisons métier reste une réponse
+            200, ce n'est pas une erreur HTTP.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
+              examples:
+                valid:
+                  summary: Transaction valide
+                  value:
+                    status: valid
+                    transactionId: tx-1001
+                    errors: []
+                    flagged: false
+                    message: null
+                invalid:
+                  summary: Transaction invalide (solde insuffisant)
+                  value:
+                    status: invalid
+                    transactionId: tx-1002
+                    errors:
+                      - "Insufficient funds: available 50.0, required 1000.0"
+                    flagged: false
+                    message: null
+                flagged:
+                  summary: Transaction flaggée pour compliance
+                  value:
+                    status: flagged
+                    transactionId: tx-1003
+                    errors: []
+                    flagged: true
+                    message: "Amount exceeds compliance threshold"
+        "400":
+          description: JSON malformé ou champ non reconnu (ex. transactionType inconnu)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    TransactionRequest:
+      type: object
+      required:
+        [id, amount, currency, transactionType, sourceAccountId, destinationAccountId]
+      properties:
+        id:
+          type: string
+          example: tx-1001
+        amount:
+          type: number
+          format: double
+          example: 250.0
+        currency:
+          type: string
+          enum: [EUR, USD, GBP, CHF]
+        transactionType:
+          type: string
+          enum: [Transfer, Payment, Withdrawal, Deposit]
+        sourceAccountId:
+          type: string
+          example: acc-active-eur
+        destinationAccountId:
+          type: string
+          example: acc-active-usd
+    ValidationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [valid, invalid, flagged]
+        transactionId:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+        flagged:
+          type: boolean
+        message:
+          type: string
+          nullable: true
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
