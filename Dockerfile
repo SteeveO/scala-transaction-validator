@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM sbtscala/scala-sbt:eclipse-temurin-17.0.14_7_1.10.7_2.13.16 AS builder
+FROM docker.io/sbtscala/scala-sbt:eclipse-temurin-17.0.14_7_1.10.7_2.13.16 AS builder
 
 WORKDIR /build
 
@@ -14,7 +14,7 @@ COPY public public
 
 RUN sbt assembly
 
-FROM eclipse-temurin:21-jre-alpine AS production
+FROM docker.io/library/eclipse-temurin:21-jre-alpine AS production
 
 RUN addgroup -S app && adduser -S app -G app
 
