@@ -1,6 +1,7 @@
 package domain.services
 
 import domain.entities._
+import domain.repositories.{AccountRepository, TransactionRepository}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -13,7 +14,8 @@ class ValidationEngineSpec extends AnyWordSpec with Matchers {
   class FakeTransactionRepository(initialIds: Set[String]) extends TransactionRepository {
     private var ids: Set[String] = initialIds
     def processedIds(): Set[String] = ids
-    def save(transaction: Transaction): Unit = ids = ids + transaction.id
+    def existsById(id: String): Boolean = ids.contains(id)
+    def save(transactionId: String): Unit = ids = ids + transactionId
   }
 
   private val activeAccount =
