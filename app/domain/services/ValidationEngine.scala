@@ -1,6 +1,7 @@
 package domain.services
 
 import domain.entities.{Transaction, ValidationError, ValidationResult}
+import domain.repositories.{AccountRepository, TransactionRepository}
 import domain.rules._
 
 class ValidationEngine(
@@ -30,11 +31,11 @@ class ValidationEngine(
 
         result match {
           case Right(tx) if tx.requiresComplianceReview =>
-            transactionRepository.save(tx)
+            transactionRepository.save(tx.id)
             ValidationResult.FlaggedTransaction(tx, "Amount exceeds compliance threshold")
 
           case Right(tx) =>
-            transactionRepository.save(tx)
+            transactionRepository.save(tx.id)
             ValidationResult.ValidTransaction(tx)
 
           case Left(error) =>
