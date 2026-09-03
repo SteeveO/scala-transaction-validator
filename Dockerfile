@@ -20,9 +20,10 @@ RUN addgroup -S app && adduser -S app -G app
 
 WORKDIR /app
 COPY --from=builder /build/target/scala-2.13/transaction-validator.jar app.jar
+RUN chown -R app:app /app
 
 USER app
 
 EXPOSE 9000
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dpidfile.path=/dev/null", "-jar", "app.jar"]
