@@ -6,5 +6,5 @@
 GET     /health                        controllers.HealthController.health
 POST    /validate                      controllers.ValidationController.validate
 
-GET     /docs/swagger-ui/index.html    controllers.SwaggerController.index
+GET     /docs                          controllers.SwaggerController.index
 GET     /assets/*file                  controllers.Assets.at(path="/public", file)
