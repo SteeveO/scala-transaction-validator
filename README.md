@@ -16,6 +16,8 @@ docker-compose up
 
 > Play refuse de démarrer en production avec un secret par défaut — la commande ci-dessus en génère un vrai directement dans `.env` (voir `.env.example` pour le détail des variables). Ne pas se contenter de `cp .env.example .env`.
 
+> **Avec Podman** (`podman compose` au lieu de `docker-compose`) : après toute modification du `Dockerfile` *ou* de `.env`, faire `podman compose down` avant `podman compose up --build`. `podman-compose` ne recrée pas toujours le container automatiquement — `--build` reconstruit l'image mais peut laisser tourner un ancien container (encore sur l'ancienne image, ou avec un `.env` obsolète figé au moment de sa création). `down` élimine le doute.
+
 Une fois démarré (quelques secondes) :
 
 | URL | Description |
